@@ -105,7 +105,7 @@ Listen $port
 <VirtualHost *:$port>
   DocumentRoot /opt/$sitename/www
   ErrorLog $weberrorlog
-  CustomLog $webaccesslog common
+  CustomLog $webaccesslog combined
 </VirtualHost>
 EOF
 
