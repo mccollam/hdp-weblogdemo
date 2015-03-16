@@ -424,7 +424,7 @@ echo
 echo "You should now be able to access the following:"
 echo "http://$ip:$port/"
 echo "(If using VirtualBox you will need to forward a port from localhost to port $port"
-echo "and use that instead.)
+echo "and use that instead.)"
 echo
 echo "Logs output to HDFS location /user/$hadoopuser/web-access-logs and /user/$hadoopuser/web-error-logs"
 echo
