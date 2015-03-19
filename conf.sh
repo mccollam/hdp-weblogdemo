@@ -22,3 +22,10 @@ category2="Shipping method"
 c2btn1="Planes"
 c2btn2="Trains"
 c2btn3="Automobiles"
+
+### You shouldn't need to edit anything below this line
+
+sitename=`echo $sitetitle | sed s/\ //g`
+
+webaccesslog="/opt/$sitename/weblogs/access.log"
+weberrorlog="/opt/$sitename/weblogs/error.log"
