@@ -33,7 +33,8 @@ for p in "${paths[@]}" ; do echo "     $p" ; done
 echo
 echo "   Delete all data from HDFS paths:"
 for h in "${hdfspaths[@]}" ; do echo "     $h" ; done
-echoecho "   Drop Hive tables:"
+echo
+echo "   Drop Hive tables:"
 for t in "${tables[@]}" ; do echo "      $t" ; done
 echo
 echo "   Processes terminated:"
