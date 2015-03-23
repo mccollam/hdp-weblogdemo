@@ -375,19 +375,27 @@ EOF
 ##### Set up hive
 echo ; echo ; echo
 echo Creating hive table $hiveaccesslog...
-if ! hive -e "CREATE EXTERNAL TABLE access_log (
-	\`ip\` STRING, \
-	\`time_local\` STRING, \
-	\`method\` STRING, \
-	\`uri\` STRING, \
-	\`protocol\` STRING, \
-	\`status\` STRING, \
-	\`bytes_sent\` STRING, \
-	\`referer\` STRING, \
-	\`useragent\` STRING) \
-	ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe' WITH SERDEPROPERTIES ( \
-		'input.regex'='^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] \"(\\w+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\".*') \
-	STORED AS TEXTFILE LOCATION '$hdfsaccesspath';"
+# FIXME: This would work much better with the hive -e syntax but I have been having
+# problems formatting/escaping it properly to do that.  Currently error detection will
+# not function correctly (the exit from hive will always return 0).
+hive <<EOL
+CREATE EXTERNAL TABLE $hiveaccesslog (
+\`ip\` STRING,
+\`time_local\` STRING,
+\`method\` STRING,
+\`uri\` STRING,
+\`protocol\` STRING,
+\`status\` STRING,
+\`bytes_sent\` STRING,
+\`referer\` STRING,
+\`useragent\` STRING )
+ROW FORMAT SERDE "org.apache.hadoop.hive.contrib.serde2.RegexSerDe"
+WITH SERDEPROPERTIES (
+'input.regex'='^(\\\S+) \\\S+ \\\S+ \\\[([^\\\[]+)\\\] "(\\\w+) (\\\S+) (\\\S+)" (\\\d+) (\\\d+) "([^"]+)" "([^"]+)".*'
+) STORED AS TEXTFILE LOCATION "$hdfsaccesspath";
+exit;
+EOL
+if [[ $? -ne 0 ]]
 then
 	echo "Unable to create $hiveaccesslog!  Aborting..."
 	exit 1
