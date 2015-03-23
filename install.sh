@@ -391,7 +391,7 @@ CREATE EXTERNAL TABLE $hiveaccesslog (
 \`useragent\` STRING )
 ROW FORMAT SERDE "org.apache.hadoop.hive.contrib.serde2.RegexSerDe"
 WITH SERDEPROPERTIES (
-'input.regex'='^(\\\S+) \\\S+ \\\S+ \\\[([^\\\[]+)\\\] "(\\\w+) (\\\S+) (\\\S+)" (\\\d+) (\\\d+) "([^"]+)" "([^"]+)".*'
+'input.regex'='^(\\\S+) \\\S+ \\\S+ \\\[([^\\\[]+)\\\] "(\\\w+) (\\\S+) (\\\S+)" (\\\d+) (\\\S+) "([^"]+)" "([^"]+)".*'
 ) STORED AS TEXTFILE LOCATION "$hdfsaccesspath";
 exit;
 EOL
