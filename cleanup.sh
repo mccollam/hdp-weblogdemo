@@ -19,7 +19,7 @@ then
 fi
 
 paths=( "$webaccesslog" "$weberrorlog" )
-hdfspaths=( "$hdfsaccesspath" "$hdfserrorspath")
+hdfspaths=( "$hdfsaccesspath" "$hdfserrorpath")
 tables=( "$hiveaccesslog" "$hiveerrorlog" )
 procs=$(ps ax | grep -i flume | grep -v grep | awk '{ print $1 }')
 
@@ -31,7 +31,7 @@ echo Actions that will be taken:
 echo "   Delete files:"
 for p in "${paths[@]}" ; do echo "     $p" ; done
 echo
-cho "   Delete all data from HDFS paths:"
+echo "   Delete all data from HDFS paths:"
 for h in "${hdfspaths[@]}" ; do echo "     $h" ; done
 echoecho "   Drop Hive tables:"
 for t in "${tables[@]}" ; do echo "      $t" ; done
