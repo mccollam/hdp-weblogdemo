@@ -375,7 +375,19 @@ EOF
 ##### Set up hive
 echo ; echo ; echo
 echo Creating hive table $hiveaccesslog...
-if ! hive -e "CREATE EXTERNAL TABLE access_log (`ip` STRING, `time_local` STRING, `method` STRING, `uri` STRING, `protocol` STRING, `status` STRING, `bytes_sent` STRING, `referer` STRING, `useragent` STRING) ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe' WITH SERDEPROPERTIES ('input.regex'='^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] \"(\\w+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\".*') STORED AS TEXTFILE LOCATION '$hdfsaccesspath';"
+if ! hive -e "CREATE EXTERNAL TABLE access_log (
+	\`ip\` STRING, \
+	\`time_local\` STRING, \
+	\`method\` STRING, \
+	\`uri\` STRING, \
+	\`protocol\` STRING, \
+	\`status\` STRING, \
+	\`bytes_sent\` STRING, \
+	\`referer\` STRING, \
+	\`useragent\` STRING) \
+	ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe' WITH SERDEPROPERTIES ( \
+		'input.regex'='^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] \"(\\w+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\".*') \
+	STORED AS TEXTFILE LOCATION '$hdfsaccesspath';"
 then
 	echo "Unable to create $hiveaccesslog!  Aborting..."
 	exit 1
