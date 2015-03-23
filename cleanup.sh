@@ -18,33 +18,62 @@ then
 	echo "Ubuntu:       run 'sudo $0'"
 fi
 
+paths=( "$webaccesslog" "$weberrorlog" )
+tables=( "$hiveaccesslog" "$hiveerrorlog" )
+procs=$(ps ax | grep -i flume | grep -v grep | awk '{ print $1 }')
+
 echo ; echo ; echo
 echo You are about to remove any existing log data that has been generated.
-echo This will remove data from HDFS and the host filesystem
+echo This will remove data from HDFS and the host filesystem!
 echo
+echo Actions that will be taken:
+echo "   Delete files:"
+for p in "${paths[@]}" ; do echo "     $p" ; done
+echo
+echo "   Drop Hive tables:"
+for t in "${tables[@]}" ; do echo "      $t" ; done
+echo
+echo "   Processes terminated:"
+for p in "$procs" ; do echo "      $p" ; done
+if [[ $procs = "" ]] ; then echo "      (none)" ; fi
+echo ; echo
 echo THIS CANNOT BE UNDONE.
-echo
+echo ; echo
 read -p "Continue? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-	# Kill host filesystem paths
-	paths=( "$webaccesslog" "$weberrorlog" )
-	tables=( "$hiveaccesslog" "$hiveerrorlog" )
+	# Kill the processes
+	if [[ $procs != "" ]]
+	then
+		if ! kill $procs
+		then
+			echo "Unable to kill Flume/Avro processes!  Aborting..."
+			exit 1
+		fi
+	fi
+
+	# Delete host filesystem paths
 	for p in "${paths[@]}"
 	do
-		if [ -d "$p"]
+		if [ -e "$p" ]
 		then
 			echo "Removing $p"
-			if ! rm "$p/*" then echo "Failed!  Aborting..." && exit 1 ; fi
+			if ! rm "$p" ; then echo "Failed!  Aborting..." && exit 1 ; fi
 		else
-			echo "NOTICE: $p does not exist (this must be created before running the demo again!)"
+			echo "NOTICE: $p does not exist (already removed?)"
 		fi
 	done
 
 	# Drop hive tables
 	for t in "${tables[@]}"
 	do
-		if ! hive -e "DROP TABLE $t;" then echo "Unable to drop table $t!  Aborting..." && exit 1 ; fi
+		if ! hive -e "DROP TABLE $t;" ; then echo "Unable to drop table $t!  Aborting..." && exit 1 ; fi
 	done
+else
+	echo "Aborting cleanup."
+	exit 0
 fi
+
+echo ; echo ; echo
+echo Cleanup complete!  You can now run \"run.sh\" to re-deploy the demo.
