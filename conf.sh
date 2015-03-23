@@ -33,3 +33,5 @@ sitename=`echo $sitetitle | sed s/\ //g`
 
 webaccesslog="/opt/$sitename/weblogs/access.log"
 weberrorlog="/opt/$sitename/weblogs/error.log"
+hdfsaccesspath="/user/$hadoopuser/web-access-logs/%y%m%d"
+hdfserrorpath="/user/$hadoopuser/web-error-logs/%y%m%d"
