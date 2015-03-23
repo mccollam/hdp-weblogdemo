@@ -33,12 +33,12 @@ then
 	tables=( "$hiveaccesslog" "$hiveerrorlog" )
 	for p in "${paths[@]}"
 	do
-		if [ -e "$p"]
+		if [ -d "$p"]
 		then
 			echo "Removing $p"
-			if ! rm "$p" then echo "Failed!  Aborting..." && exit 1 ; fi
+			if ! rm "$p/*" then echo "Failed!  Aborting..." && exit 1 ; fi
 		else
-			echo "NOTICE: $p does not exist (already removed?)"
+			echo "NOTICE: $p does not exist (this must be created before running the demo again!)"
 		fi
 	done
 
