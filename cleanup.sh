@@ -19,6 +19,7 @@ then
 fi
 
 paths=( "$webaccesslog" "$weberrorlog" )
+hdfspaths=( "$hdfsaccesspath" "$hdfserrorspath")
 tables=( "$hiveaccesslog" "$hiveerrorlog" )
 procs=$(ps ax | grep -i flume | grep -v grep | awk '{ print $1 }')
 
@@ -30,11 +31,13 @@ echo Actions that will be taken:
 echo "   Delete files:"
 for p in "${paths[@]}" ; do echo "     $p" ; done
 echo
-echo "   Drop Hive tables:"
+cho "   Delete all data from HDFS paths:"
+for h in "${hdfspaths[@]}" ; do echo "     $h" ; done
+echoecho "   Drop Hive tables:"
 for t in "${tables[@]}" ; do echo "      $t" ; done
 echo
 echo "   Processes terminated:"
-for p in "$procs" ; do echo "      $p" ; done
+for p in $procs ; do echo "      $p" ; done
 if [[ $procs = "" ]] ; then echo "      (none)" ; fi
 echo ; echo
 echo THIS CANNOT BE UNDONE.
@@ -70,10 +73,19 @@ then
 	do
 		if ! hive -e "DROP TABLE $t;" ; then echo "Unable to drop table $t!  Aborting..." && exit 1 ; fi
 	done
+
+	# Clean up HDFS
+	for h in "${hdfspaths[@]}"
+	do
+		if ! hdfs dfs -rm $h/*
+		then
+			echo "NOTICE: Unable to remove files from HDFS path $h!"
+		fi
+	done
 else
 	echo "Aborting cleanup."
 	exit 0
 fi
 
 echo ; echo ; echo
-echo Cleanup complete!  You can now run \"run.sh\" to re-deploy the demo.
+echo Cleanup complete!  You can now run \"install.sh\" and then \"run.sh\" to re-deploy the demo.
