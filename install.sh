@@ -247,7 +247,7 @@ collector.sinks.LocalOut.channel = mc1
 collector.sinks.HadoopOut.type = hdfs
 collector.sinks.HadoopOut.channel = mc2
 #collector.sinks.HadoopOut.hdfs.path = /user/$hadoopuser/web-access-logs/%{log_type}/%y%m%d
-collector.sinks.HadoopOut.hdfs.path = /user/$hadoopuser/web-access-logs/%y%m%d
+collector.sinks.HadoopOut.hdfs.path = $hdfsaccesspath
 collector.sinks.HadoopOut.hdfs.fileType = DataStream
 collector.sinks.HadoopOut.hdfs.writeFormat = Text
 collector.sinks.HadoopOut.hdfs.rollSize = 0
@@ -290,7 +290,7 @@ collector.sinks.LocalOut.channel = mc1
 collector.sinks.HadoopOut.type = hdfs
 collector.sinks.HadoopOut.channel = mc2
 #collector.sinks.HadoopOut.hdfs.path = /user/$hadoopuser/web-error-logs/%{log_type}/%y%m%d
-collector.sinks.HadoopOut.hdfs.path = /user/$hadoopuser/web-error-logs/%y%m%d
+collector.sinks.HadoopOut.hdfs.path = $hdfserrorpath
 collector.sinks.HadoopOut.hdfs.fileType = DataStream
 collector.sinks.HadoopOut.hdfs.writeFormat = Text
 collector.sinks.HadoopOut.hdfs.rollSize = 0
@@ -370,3 +370,21 @@ source_agent.sinks.avro_sink.channel = memoryChannel
 source_agent.sinks.avro_sink.hostname = localhost
 source_agent.sinks.avro_sink.port = 4546
 EOF
+
+
+##### Set up hive
+echo ; echo ; echo
+echo Creating hive table $hiveaccesslog...
+if ! hive -e "CREATE EXTERNAL TABLE access_log_20150323 (\
+	`ip` STRING, \
+	`time_local` STRING, \
+	`method` STRING, \
+	`uri` STRING, \
+	`protocol` STRING, \
+	`status` STRING, \
+	`bytes_sent` STRING, \
+	`referer` STRING, \
+	`useragent` STRING) \
+	ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe' WITH SERDEPROPERTIES ( \
+		'input.regex'='^(\\S+) \\S+ \\S+ \\[([^\\[]+)\\] \"(\\w+) (\\S+) (\\S+)\" (\\d+) (\\d+) \"([^\"]+)\" \"([^\"]+)\".*') \
+	STORED AS TEXTFILE LOCATION '/user/hue/web-access-logs/150323';
