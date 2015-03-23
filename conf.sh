@@ -8,6 +8,10 @@
 port=81
 # Username the data will be stored under in HDFS:
 hadoopuser=hue
+# Hive table name for access log data
+hiveaccesslog="access_log"
+# Hive table name for error log data
+hiveerrorlog="error_log"
 # Name of the data collection site
 # DO NOT USE SPECIAL CHARACTERS IN THIS
 sitetitle="Sample Site"
