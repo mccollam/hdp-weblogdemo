@@ -7,6 +7,12 @@ then
 	echo "Unable to load configuration file $dir/conf.sh!  Aborting..."
 	exit 1
 fi
+
+if ! . $dir/distro.sh
+then
+	echo "Unable to load distro detection script $dir/distro.sh!  Aborting..."
+	exit 1
+fi
 ###
 
 # This needs root
@@ -17,56 +23,6 @@ then
 	echo "RHEL/CentOS:  execute 'su -' and then run this script again"
 	echo "Ubuntu:       run 'sudo $0'"
 fi
-
-# Figure out our distro
-# TODO: SuSE support
-distro=""
-if grep -i centos /etc/redhat-release &> /dev/null
-then
-	distro=centos
-fi
-if grep -i red /etc/redhat-release &> /dev/null
-then
-	distro=rhel
-fi
-if grep -i ubuntu /etc/lsb-release &> /dev/null
-then
-	distro=ubuntu
-fi
-
-if [[ $distro = "" ]]
-then
-	echo "Unknown distro:"
-	cat /etc/lsb-release
-	exit 1
-fi
-
-case $distro in
-	centos | rhel)
-		apache_base=/etc/httpd
-		apache_pkg=httpd
-		apache_conf_dir="$apache_base/conf.d"
-		apache_restart_cmd="service httpd restart"
-		install_cmd="yum install"
-		enable_site_cmd="true" # No site management on Red Hat :(
-		#webaccesslog=/var/log/httpd/access_log
-		#weberrorlog=/var/log/httpd/error_log
-		;;
-	ubuntu)
-		apache_base=/etc/apache2
-		apackhe_pkg=apache2
-		apache_conf_dir="$apache_base/sites_available"
-		apache_restart_cmd="service apache2 restart"
-		install_cmd="apt-get install"
-		enable_site_cmd="a2ensite"
-		#webaccesslog=/var/log/apache2/access.log
-		#weberrorlog=/var/log/apache2/error.log
-		;;
-	*)
-		echo "Error -- unknown distribution $distro!  Aborting...";
-		exit 1
-		;;
-esac
 
 ##### Make sure packages are installed
 if ! $install_cmd $apache_pkg
