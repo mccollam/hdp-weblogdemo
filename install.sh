@@ -381,15 +381,15 @@ echo Creating hive table $hiveaccesslog...
 hive <<EOL
 CREATE EXTERNAL TABLE $hiveaccesslog (
 \`ip\` STRING,
-\`time_local\` STRING,
+\`time\` STRING,
 \`method\` STRING,
 \`uri\` STRING,
 \`protocol\` STRING,
 \`status\` STRING,
 \`bytes_sent\` STRING,
 \`referer\` STRING,
-\`useragent\` STRING )
-ROW FORMAT SERDE "org.apache.hadoop.hive.contrib.serde2.RegexSerDe"
+\`useragent\` STRING
+) ROW FORMAT SERDE "org.apache.hadoop.hive.contrib.serde2.RegexSerDe"
 WITH SERDEPROPERTIES (
 'input.regex'='^(\\\S+) \\\S+ \\\S+ \\\[([^\\\[]+)\\\] "(\\\w+) (\\\S+) (\\\S+)" (\\\d+) (\\\S+) "([^"]+)" "([^"]+)".*'
 ) STORED AS TEXTFILE LOCATION "$hdfsaccesspath";
@@ -401,4 +401,16 @@ then
 	exit 1
 fi
 echo Creating hive table $hiverrorlog...
+hive <<EOL
+CREATE EXTERNAL TABLE $hiveerrorlog (
+\`time\` STRING,
+\`status\` STRING,
+\`ip\` STRING,
+\`text\` STRING
+) ROW FORMAT SERDE "org.apache.hadoop.hive.contrib.serde2.RegexSerDe"
+WITH SERDEPROPERTIES (
+'input.regex'='^\\\[([^\\\[]+)\\\] \\\[([^\\\[]+)\\\] \\\[([^\\\[]+)\\\] (.*)$'
+) STORED AS TEXTFILE LOCATION "$hdfserrorpath";
+exit;
+EOL
 echo "( ( ( TODO ) ) )"
