@@ -31,6 +31,10 @@ do
 done
 echo "Here we go!"
 
+# Make sure these files exist so the tail command doesn't bomb
+touch "$webaccesslog"
+touch "$weberrorlog"
+
 if ! flume-ng agent -c conf -f /opt/$sitename/flume/avroaccess.conf -n collector &
 then
 	echo "Unable to start access log collector!  Aborting..."
