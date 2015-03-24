@@ -7,6 +7,12 @@ then
 	echo "Unable to load configuration file $dir/conf.sh!  Aborting..."
 	exit 1
 fi
+
+if ! . $dir/distro.sh
+then
+	echo "Unable to load distro detection script $dir/distro.sh!  Aborting..."
+	exit 1
+fi
 ###
 
 # This needs root
@@ -18,7 +24,7 @@ then
 	echo "Ubuntu:       run 'sudo $0'"
 fi
 
-paths=( "$webaccesslog" "$weberrorlog" )
+paths=( "$webaccesslog" "$weberrorlog" "$apache_conf_dir/$sitename.conf")
 hdfspaths=( "$hdfsaccesspath" "$hdfserrorpath")
 tables=( "$hiveaccesslog" "$hiveerrorlog" )
 procs=$(ps ax | grep -i flume | grep -v grep | awk '{ print $1 }')
