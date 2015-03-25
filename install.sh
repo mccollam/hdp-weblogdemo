@@ -86,6 +86,12 @@ cat << EOF > "/opt/$sitename/www/index.html"
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", url, false);
 			xmlHttp.send(null);
+			$('#btn_notify').html('<div class="alert alert-warning"><span>Click on ' + btn + ' recorded!</span></div>')
+			setTimeout(function() {
+				$("div.alert").fadeTo(500, 0).slideUp(500, function(){
+					$("div.alert").remove();
+				})
+			}, 2000);
 		}
 	</script>
   </head>
@@ -101,6 +107,14 @@ cat << EOF > "/opt/$sitename/www/index.html"
 				<strong><h1>Welcome to $sitetitle</h1></strong>
 				<h2>$sitedesc</h2>
 			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="column col=md-4"></div>
+			<div class="column col=md-4 flash fade in out text-center" style="height: 3em" id="btn_notify"></div>
+			<div class="column col=md-4"></div>
 		</div>
 	</div>
 
