@@ -86,10 +86,10 @@ cat << EOF > "/opt/$sitename/www/index.html"
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", url, false);
 			xmlHttp.send(null);
-			$('#btn_notify').html('<div class="alert alert-warning"><span>Click on ' + btn + ' recorded!</span></div>')
+			\$('#btn_notify').html('<div class="alert alert-warning"><span>Click on ' + btn + ' recorded!</span></div>')
 			setTimeout(function() {
-				$("div.alert").fadeTo(500, 0).slideUp(500, function(){
-					$("div.alert").remove();
+				\$("div.alert").fadeTo(500, 0).slideUp(500, function(){
+					\$("div.alert").remove();
 				})
 			}, 2000);
 		}
