@@ -383,4 +383,5 @@ WITH SERDEPROPERTIES (
 ) STORED AS TEXTFILE LOCATION "$hdfserrorpath";
 exit;
 EOL
-echo "( ( ( TODO ) ) )"
+
+echo "Finished.  Now run 'run.sh' to start flume and begin collecting data."
