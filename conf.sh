@@ -37,3 +37,7 @@ weberrorlog="/opt/$sitename/weblogs/error.log"
 #hdfserrorpath="/user/$hadoopuser/web-error-logs/%y%m%d"
 hdfsaccesspath="/user/$hadoopuser/web-access-logs"
 hdfserrorpath="/user/$hadoopuser/web-error-logs"
+
+solruser="solr"
+solrpath="/opt/solr"
+fqdn="sandbox"

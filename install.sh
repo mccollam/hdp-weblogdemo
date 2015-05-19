@@ -25,10 +25,15 @@ then
 fi
 
 ##### Make sure packages are installed
-if ! $install_cmd $apache_pkg
+if ! check_package_installed $apache_pkg
 then
-	echo "Error installing $apache_pkg!  Aborting..."
-	exit 1
+	if ! $install_cmd $apache_pkg
+	then
+		echo "Error installing $apache_pkg!  Aborting..."
+		exit 1
+	fi
+else
+	echo "Apache already installed; skipping install."
 fi
 
 ##### Set up a new site

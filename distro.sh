@@ -49,3 +49,15 @@ case $distro in
 		exit 1
 		;;
 esac
+
+function check_package_installed
+{
+	case $distro in
+		centos | rhel)
+			return $(yum list installed "$@" > /dev/null 2>&1)
+			;;
+		ubuntu)
+			return $(dpkg -l "$@" > /dev/null 2>&1)
+			;;
+	esac
+}
