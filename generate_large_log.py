@@ -105,7 +105,7 @@ while (cur < now):
 		# This should never happen
 		page = choice(pages_200)
 
-	line = ip, "- -", date, '"GET', page, 'HTTP/1.1"', status, bytes_returned, '"' + referer + '"', '"' + useragent + '"', '"-"'
+	line = ip, "- -", date, '"GET', page, 'HTTP/1.1"', status, bytes_returned, '"' + referer + '"', '"' + useragent + '"'
 	f.write(' '.join(line) + '\n')
 
 	ctr += 1
