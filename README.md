@@ -25,7 +25,9 @@ The following external tables are created in Hive and pointed to the logs ingest
 * access_log - Web access logs
 * error_log - Web error logs
 
-If you want to generate a larger log to show more data within the tables, the 'generate_large_log.py' script is useful for this.  It can be configured by editing the values at the top of the file, but by default will produce a ~600MB log file with 30 days' of simulated data.
+Additional uses
+---------------
+If you want to generate a larger log to show more data within the tables, the 'generate_large_log.py' script in the 'optional' directory is useful for this.  It can be configured by editing the values at the top of the file, but by default will produce a ~600MB log file with 30 days' of simulated data.
 
 Cleaning up
 -----------
