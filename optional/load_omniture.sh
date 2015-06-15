@@ -33,7 +33,7 @@ fi
 
 rm -rf __MACOSX # seriously, OSX?  Get it together.
 
-if ! hdfs dfs -mkdir -p "$hdfs_dir/users" && hdfs fs mkdir -p "$hdfs_dir/products" && hdfs fs mkdir -p "$hdfs_dir/omniturelogs"
+if ! hdfs dfs -mkdir -p "$hdfs_dir/users" && hdfs dfs -mkdir -p "$hdfs_dir/products" && hdfs dfs -mkdir -p "$hdfs_dir/omniturelogs"
 then
 	echo "Unable to create HDFS directories!  Aborting..."
 	cd -
