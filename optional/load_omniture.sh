@@ -114,7 +114,7 @@ col_13 url,
 col_14 swid,
 col_50 city,
 col_51 country,
-col_53 `state`
+col_53 \`state\`
 from $logstable;
 EOL
 if [[ $? -ne 0 ]]
@@ -131,7 +131,7 @@ select
         o.url,
         o.ip,
         o.city,
-        upper(o.`state`) `state`,
+        upper(o.\`state\`) \`state\`,
         o.country,
         p.category,
         CAST(datediff(
