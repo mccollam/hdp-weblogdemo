@@ -75,7 +75,7 @@ then
 fi
 
 hive <<EOL
-DROP TABLE $productstable
+DROP TABLE $productstable;
 CREATE EXTERNAL TABLE $productstable
 (url string, category string)
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE
