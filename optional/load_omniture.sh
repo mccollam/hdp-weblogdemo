@@ -24,7 +24,7 @@ then
 	fi
 fi
 
-if ! unzip RefineDemoData.zip
+if ! unzip -n RefineDemoData.zip
 then
 	echo "Unable to unzip demo data file!  Aborting..."
 	cd -
@@ -33,31 +33,28 @@ fi
 
 rm -rf __MACOSX # seriously, OSX?  Get it together.
 
-if ! hdfs fs mkdir -p "$hdfs_dir/users" && hdfs fs mkdir -p "$hdfs_dir/products" && hdfs fs mkdir -p "$hdfs_dir/omniturelogs"
+if ! hdfs dfs -mkdir -p "$hdfs_dir/users" && hdfs fs mkdir -p "$hdfs_dir/products" && hdfs fs mkdir -p "$hdfs_dir/omniturelogs"
 then
 	echo "Unable to create HDFS directories!  Aborting..."
 	cd -
 	exit 1
 fi
 
-for i in $(seq 1 5)
-do
-	if ! hdfs fs put data/Omniture.$i.tsv.gz $hdfs_dir/omniturelogs
-	then
-		echo "Unable to copy Omniture.$i.tsv.gz to HDFS!  Aborting..."
-		cd -
-		exit 1
-	fi
-done
+if ! hdfs dfs -put data/Omniture.0.tsv.gz $hdfs_dir/omniturelogs
+then
+	echo "Unable to copy Omniture.0.tsv.gz to HDFS!  Aborting..."
+	cd -
+	exit 1
+fi
 
-if ! hdfs fs put data/users.tsv.gz $hdfs_dir/users
+if ! hdfs dfs -put data/users.tsv.gz $hdfs_dir/users
 then
 	echo "Unable to copy users.tsv.gz to HDFS!  Aborting..."
 	cd -
 	exit 1
 fi
 
-if ! hdfs fs put data/products.tsv.gz $hdfs_dir/products
+if ! hdfs dfs -put data/products.tsv.gz $hdfs_dir/products
 then
 	echo "Unable to copy products.tsv.gz to HDFS!  Aborting..."
 	cd -
